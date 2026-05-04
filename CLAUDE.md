@@ -25,7 +25,7 @@ CausalImpact, scrapers                                 (read-only)
 - **Python** (`src/`, `scrapers/`, `pipelines/`) does all analysis. Single-node pandas + DuckDB. No Spark, no Delta.
 - **DuckDB-in-repo** is the system of record. The single file `data/eqdp.duckdb` is committed to the repo. Schema: `db/schema_duckdb.sql`. There is no managed database, no auth, no external service — pipelines write the file, the dashboard reads it.
 - **Pipeline write path** uses `src/db.py::get_supabase()` (legacy name, returns a `DuckStore`). The shim in `src/store.py` exposes a `supabase-py`-compatible chainable API (`.table().upsert()/.select().eq().order().execute()`) so the pipelines did not need rewrites when Supabase was removed. Read it before adding new pipeline code.
-- **Streamlit** (`streamlit_app/`) is the public site — multi-page data-science app with Plotly charts, candlestick TA view, event studies, candidate-score tracker. Entry point: `streamlit_app/Home.py`. Reads DuckDB directly via `streamlit_app/lib/store.py`. No secrets needed.
+- **Streamlit** (`streamlit_app/`) is the public site — multi-page data-science app with Plotly charts, candlestick TA view, event studies, candidate-score tracker. Entry point: `streamlit_app/EQDP_Brief.py`. Reads DuckDB directly via `streamlit_app/lib/store.py`. No secrets needed.
 - **GitHub Actions** runs the daily/weekly/monthly Python jobs and commits the updated `data/eqdp.duckdb` back to the repo. Free for the public repo. Streamlit Cloud auto-redeploys on push.
 
 > The `web/` directory holds an earlier Next.js prototype. It is no longer the active surface; do not extend it. Add features to `streamlit_app/`.
@@ -93,7 +93,7 @@ A stock can sit in multiple tiers; highest tier wins for headline classification
 - Pages: **Home** (snapshot + DiD forest), **Tracker** (full candidate-score table with filters), **Event Studies** (CARs by event/benchmark, treated vs control), **Universe** (T1/T2/T3 explorer), **Ticker Analyzer** (candlestick + RSI/MACD/Bollinger/Amihud + event lines + filing markers), **Filings** (T1 SGXNet feed), **Methodology**, **Brief** (placeholder), **About**, **Disclaimer**.
 - Disclaimer banner (`lib/components.disclaimer_banner`) renders at the top of every page; full text on the Disclaimer page reads `docs/DISCLAIMER.md` directly so the canonical text lives in one place.
 - TA helpers (`lib/ta.py`) are pure pandas — no `pandas-ta` to dodge pkg_resources/numpy issues on Streamlit Cloud.
-- Deploy: Streamlit Community Cloud → main file `streamlit_app/Home.py`. No secrets required — the DuckDB file ships with the repo.
+- Deploy: Streamlit Community Cloud → main file `streamlit_app/EQDP_Brief.py`. No secrets required — the DuckDB file ships with the repo.
 
 ## Common workflows
 
@@ -115,7 +115,7 @@ python -m pipelines.daily_score --date 2026-05-02
 Run the Streamlit app locally:
 
 ```bash
-streamlit run streamlit_app/Home.py
+streamlit run streamlit_app/EQDP_Brief.py
 ```
 
 Apply DB schema changes:

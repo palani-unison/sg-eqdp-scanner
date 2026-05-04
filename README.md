@@ -54,13 +54,13 @@ python -m pipelines.backfill --start 2020-01-01 --end yesterday
 
 ### Run the Streamlit app locally
 ```bash
-streamlit run streamlit_app/Home.py
+streamlit run streamlit_app/EQDP_Brief.py
 ```
 The app reads `data/eqdp.duckdb`. If it's missing, run `python -m scripts.init_duckdb` first.
 
 ### Deploy to Streamlit Community Cloud (free)
 1. Push this repo to GitHub.
-2. New app → repo + branch + main file path = `streamlit_app/Home.py`.
+2. New app → repo + branch + main file path = `streamlit_app/EQDP_Brief.py`.
 3. No secrets required — the DuckDB file ships with the repo.
 4. Streamlit installs from `requirements.txt` automatically; the app cold-starts in ~60s.
 
