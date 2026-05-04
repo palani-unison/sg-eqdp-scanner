@@ -19,7 +19,7 @@
 -- ---------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS pipeline_runs (
-    run_id          UUID PRIMARY KEY,
+    run_id          UUID PRIMARY KEY DEFAULT uuid(),
     job_name        TEXT NOT NULL,
     started_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
     completed_at    TIMESTAMPTZ,

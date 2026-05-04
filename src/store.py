@@ -216,11 +216,16 @@ class _Insert:
                 sql += f" ON CONFLICT ({conflict_cols}) DO UPDATE SET {updates}"
             else:
                 sql += f" ON CONFLICT ({conflict_cols}) DO NOTHING"
-        params = [[row.get(c) for c in cols] for row in rows]
+        sql += " RETURNING *"
         with _LOCK, self._store._connect() as conn:
-            conn.executemany(sql, params)
-        # Mimic supabase by echoing back the rows we wrote.
-        return _Result(data=rows)
+            # DuckDB's executemany doesn't materialise RETURNING rows the way
+            # we need; loop and collect explicitly.
+            returned: list[dict[str, Any]] = []
+            for row in rows:
+                params = [row.get(c) for c in cols]
+                df = conn.execute(sql, params).df()
+                returned.extend(df.to_dict(orient="records"))
+        return _Result(data=returned)
 
 
 class _Table:
