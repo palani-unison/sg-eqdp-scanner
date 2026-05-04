@@ -63,6 +63,25 @@ Thumbs.db
 # Reference / scratch material — kept locally, never committed
 Research/
 
+# Legacy / local-only directories — kept on disk for reference, not on GitHub
+.claude/
+scrapers/
+docs/
+supabase/
+web/
+db/edge_functions/
+db/migrations/
+db/triggers/
+db/schema.sql
+.env.example
+memory.md
+pipelines/weekly_filings.py
+pipelines/compute_summaries.py
+tests/test_sgxnet_parser.py
+tests/test_manager_aliases.py
+scripts/db_push.py
+scripts/export_data.py
+
 # Supabase CLI working state (auth tokens, project refs)
 supabase/.temp/
 supabase/.branches/
