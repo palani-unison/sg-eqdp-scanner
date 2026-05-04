@@ -334,8 +334,11 @@ if not filings.empty:
         )
 
 fig.update_xaxes(rangeslider_visible=False)
+# Keep the stacked figure modest — heavy on mobile if too tall.
+# Price ~360, each indicator panel ~150, capped at 880px overall.
+_fig_h = 360 + 150 * max(panels - 1, 0) + 60
 fig.update_layout(
-    height=240 + 200 * (panels - 1) + 220,
+    height=min(_fig_h, 880),
     showlegend=True,
     legend=dict(orientation="h", y=1.06, x=0, bgcolor="rgba(0,0,0,0)"),
     margin=dict(l=40, r=20, t=30, b=30),
