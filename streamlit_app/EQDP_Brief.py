@@ -40,10 +40,7 @@ st.set_page_config(
 # ---------------------------------------------------------------------------
 with st.sidebar:
     st.markdown("### EQDP Scanner")
-    st.caption(
-        "Forensic study of the MAS Equity Market Development Programme — "
-        "who actually benefited, and by how much."
-    )
+    st.caption("A study on the search for the Next 50 in Singapore.")
     st.markdown("---")
     st.markdown(
         f"**Today:** {dt.date.today():%Y-%m-%d}  \n"
