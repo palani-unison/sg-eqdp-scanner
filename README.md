@@ -47,7 +47,7 @@ See [`CLAUDE.md`](CLAUDE.md) for the project guide, [`docs/STRATEGY.md`](docs/ST
 git clone https://github.com/<your-handle>/sg-eqdp-scanner.git
 cd sg-eqdp-scanner
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements.txt -r requirements-dev.txt   # dashboard + pipelines
 python -m scripts.init_duckdb              # creates data/eqdp.duckdb
 python -m pipelines.backfill --start 2020-01-01 --end yesterday
 ```
@@ -61,8 +61,9 @@ The app reads `data/eqdp.duckdb`. If it's missing, run `python -m scripts.init_d
 ### Deploy to Streamlit Community Cloud (free)
 1. Push this repo to GitHub.
 2. New app → repo + branch + main file path = `streamlit_app/EQDP_Brief.py`.
-3. No secrets required — the DuckDB file ships with the repo.
-4. Streamlit installs from `requirements.txt` automatically; the app cold-starts in ~60s.
+3. **Advanced Settings → Python version → 3.12.** The pinned wheels do not have 3.13 / 3.14 builds, so the default Python will source-build and likely fail.
+4. No secrets required — the DuckDB file ships with the repo.
+5. Streamlit installs only from `requirements.txt` (slim — ~5 packages). `requirements-dev.txt` is for local pipeline runs and is *not* read by Streamlit Cloud.
 
 ### Continue the live increments
 GitHub Actions takes over after the backfill — daily, weekly, and monthly cron jobs upsert fresh data into Supabase. See `.github/workflows/`.

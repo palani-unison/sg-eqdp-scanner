@@ -1,0 +1,46 @@
+# sg-eqdp-scanner — pipelines + tests + dev tooling.
+#
+# Install order:
+#   pip install -r requirements.txt -r requirements-dev.txt
+#
+# Streamlit Community Cloud does NOT install this — it only reads
+# requirements.txt. These dependencies are needed locally and in
+# GitHub Actions when running the analytical pipelines.
+
+# Runtime deps the dashboard already pulls (kept here for clarity if a
+# developer installs only this file; pip is happy with duplicates):
+pandas==2.2.3
+numpy==2.1.3
+duckdb>=1.5.0,<2.0
+plotly==5.24.1
+
+# Price / market data ingest
+yfinance>=1.3.0        # 0.2.x is broken against Yahoo's new bot-detection
+curl_cffi>=0.7         # browser-TLS impersonation — required by yfinance
+tenacity==9.0.0        # retries with backoff
+
+# Statistics / econometrics — used by compute_metrics, compute_did, compute_bootstrap
+scipy==1.14.1
+statsmodels==0.14.4
+linearmodels==6.1
+# Bayesian synthetic control — currently deferred. tfcausalimpact 0.0.16 is
+# Py<3.12; 0.0.18 pins pandas<=2.2 which clashes with our 2.2.3.
+# tfcausalimpact==0.0.18
+
+# Storage / IO helpers
+pyarrow==18.1.0
+
+# Plotting — used by ad-hoc analysis scripts; Streamlit uses plotly only
+matplotlib==3.9.3
+
+# Pipeline CLI / config
+python-dotenv==1.0.1
+pydantic==2.10.3
+typer==0.15.1
+rich==13.9.4
+
+# Tests + lint
+pytest==8.3.4
+pytest-cov==6.0.0
+mypy==1.13.0
+ruff==0.8.4

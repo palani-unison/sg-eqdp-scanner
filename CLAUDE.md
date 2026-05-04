@@ -91,7 +91,7 @@ Run Phase 0 backfill on laptop:
 
 ```bash
 python -m venv .venv && source .venv/bin/activate     # Python 3.12
-pip install -r requirements.txt
+pip install -r requirements.txt -r requirements-dev.txt   # dashboard + pipelines
 python -m scripts.init_duckdb                          # creates data/eqdp.duckdb
 python -m pipelines.backfill --start 2020-01-01 --end yesterday
 python -m pipelines.compute_metrics
