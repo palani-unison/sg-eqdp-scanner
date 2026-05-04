@@ -1,7 +1,19 @@
+---
+title: EQDP Brief
+emoji: 📈
+colorFrom: blue
+colorTo: indigo
+sdk: streamlit
+sdk_version: 1.40.2
+app_file: streamlit_app/EQDP_Brief.py
+pinned: false
+python_version: "3.12"
+---
+
 # sg-eqdp-scanner
 
-> **Personal research by Palaniappan Chidambaram. Not investment advice. Not affiliated with Unison Group or any other entity.**
-> See [DISCLAIMER.md](docs/DISCLAIMER.md) before reading or using anything in this repository.
+> **Personal research by Palaniappan Chidambaram. Not investment advice.**
+> A technical study and analysis intended for discussion.
 
 A reproducible, public-data forensic study of the **Singapore MAS Equity Market Development Programme (EQDP)** — a S$6.5 billion programme deploying capital through nine appointed asset managers into SGX-listed equities. This repository identifies which Singapore-listed companies plausibly benefited from the programme (and which did not), and powers the **EQDP Brief** web application.
 
