@@ -59,10 +59,8 @@ def footer() -> None:
     st.markdown(
         "<hr style='border:none;border-top:1px solid #252C4A;margin:2rem 0 0.75rem'/>"
         "<div style='color:#8A95B5;font-size:0.82rem;line-height:1.5'>"
-        "© 2026 Palaniappan Chidambaram. Personal research — not investment advice — "
-        "not affiliated with Unison Group. "
-        "<a href='Disclaimer' target='_self' style='color:#8A95B5'>Disclaimer</a> · "
-        "<a href='About' target='_self' style='color:#8A95B5'>About</a>"
+        "© 2026 Palaniappan Chidambaram. Personal research — not investment advice. "
+        "<a href='Disclaimer' target='_self' style='color:#8A95B5'>Disclaimer</a>"
         "</div>",
         unsafe_allow_html=True,
     )

@@ -52,8 +52,8 @@ with st.sidebar:
     )
     st.markdown("---")
     st.caption(
-        "Data refreshed daily from Supabase (gold layer). "
-        "Pipelines run on GitHub Actions; the source of truth is Postgres."
+        "Data refreshed daily from a DuckDB file committed to the repo. "
+        "Pipelines run on GitHub Actions; the source of truth is `data/eqdp.duckdb`."
     )
 
 # ---------------------------------------------------------------------------
@@ -117,7 +117,7 @@ if not tickers_df.empty:
 else:
     empty_state(
         "Universe table is empty.",
-        "Run `python -m pipelines.backfill --start 2020-01-01 --end yesterday` to seed Supabase.",
+        "Run `python -m pipelines.backfill --start 2020-01-01 --end yesterday` to seed the DuckDB file.",
     )
 
 st.markdown("&nbsp;")
