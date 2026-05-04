@@ -1,0 +1,79 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.eggs/
+*.egg-info/
+*.egg
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.tox/
+
+# Secrets & local config
+.env
+.env.*
+!.env.example
+.env.local
+web/.env.local
+
+# Notebook outputs
+.ipynb_checkpoints/
+*.ipynb
+
+# Data — analytical gold tables live in Supabase, not in git
+data/raw/
+data/silver/
+data/gold/
+*.parquet
+*.duckdb
+*.csv
+!docs/**/*.csv
+
+# Web (Next.js)
+web/node_modules/
+web/.next/
+web/out/
+web/build/
+web/.turbo/
+web/.vercel/
+web/playwright-report/
+web/test-results/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Reference / scratch material — kept locally, never committed
+Research/
+
+# Supabase CLI working state (auth tokens, project refs)
+supabase/.temp/
+supabase/.branches/
+
+# Vercel CLI working state
+.vercel/
+
+# Background-task output
+/tmp/eqdp-*.log
+
+# Logs
+*.log
+logs/
+
+# Build artifacts
+dist/
+build/

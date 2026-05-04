@@ -1,0 +1,48 @@
+# sg-eqdp-scanner — Python dependencies
+# Pin versions; bump deliberately, not accidentally.
+
+# Data
+pandas==2.2.3
+numpy==2.1.3
+duckdb==1.1.3
+pyarrow==18.1.0
+yfinance==0.2.50
+
+# Statistics / econometrics
+scipy==1.14.1
+statsmodels==0.14.4
+linearmodels==6.1
+# Bayesian synthetic control. tfcausalimpact is the actively-maintained pkg.
+tfcausalimpact==0.0.16
+
+# HTTP / scraping
+requests==2.32.3
+beautifulsoup4==4.12.3
+lxml==5.3.0
+tenacity==9.0.0          # retries with backoff
+
+# Database
+supabase==2.10.0
+psycopg2-binary==2.9.10
+
+# Plotting (Streamlit app uses plotly; matplotlib for static PDF exports)
+matplotlib==3.9.3
+plotly==5.24.1
+
+# Streamlit web app (replaces the legacy web/ Next.js app)
+streamlit==1.40.2
+streamlit-extras==0.5.0
+# RSI / MACD / Bollinger / ATR are implemented in streamlit_app/lib/ta.py from
+# first principles — no pandas-ta to avoid pkg_resources/numpy quirks on Cloud.
+
+# Utilities
+python-dotenv==1.0.1
+pydantic==2.10.3
+typer==0.15.1            # tiny CLI for pipelines
+rich==13.9.4             # nicer logs
+
+# Testing / dev
+pytest==8.3.4
+pytest-cov==6.0.0
+mypy==1.13.0
+ruff==0.8.4

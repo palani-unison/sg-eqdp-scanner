@@ -1,0 +1,67 @@
+[project]
+name = "sg-eqdp-scanner"
+version = "0.1.0"
+description = "Forensic inference of EQDP beneficiaries on SGX. Personal research."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "Palaniappan Chidambaram" }]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_return_any = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+no_implicit_optional = true
+files = ["src", "scrapers", "pipelines", "tests"]
+
+[[tool.mypy.overrides]]
+module = [
+    "yfinance.*",
+    "tfcausalimpact.*",
+    "linearmodels.*",
+    "supabase.*",
+    "statsmodels",
+    "statsmodels.*",
+    "curl_cffi",
+    "curl_cffi.*",
+]
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["Research", ".venv", "web"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific
+]
+ignore = [
+    "E501",   # line length handled by formatter
+    "RUF001", # ambiguous unicode in strings (we use × → α β etc. intentionally)
+    "RUF002", # ambiguous unicode in docstrings (math notation)
+    "RUF003", # ambiguous unicode in comments (math notation)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["B011"]  # allow assert False in tests
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = ["-q", "--strict-markers", "--strict-config"]
+filterwarnings = [
+    "ignore::DeprecationWarning:yfinance.*",
+    "ignore::FutureWarning:pandas.*",
+]
