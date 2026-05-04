@@ -100,22 +100,22 @@ for col, (tag, title, sub, body, color) in zip(cols, types):
     with col:
         st.markdown(
             f"""
-<div style='border:1px solid #1F2742;border-radius:12px;
-            padding:1.1rem 0.95rem;height:100%;
-            background:linear-gradient(180deg, {color}10 0%, transparent 60%)'>
+<div style='border:1px solid {color}44;border-radius:14px;
+            padding:1.15rem 1rem;height:100%;
+            background:linear-gradient(160deg, {color}28 0%, {color}10 35%, transparent 75%)'>
   <div style='color:{color};font-size:0.72rem;letter-spacing:0.18em;
-              text-transform:uppercase;font-weight:600;margin-bottom:0.3rem'>
+              text-transform:uppercase;font-weight:700;margin-bottom:0.4rem'>
     {tag}
   </div>
-  <div style='color:#E5E9F2;font-size:1.0rem;font-weight:600;
-              line-height:1.3;margin-bottom:0.2rem'>
+  <div style='color:#F1F5FF;font-size:1.05rem;font-weight:700;
+              line-height:1.3;margin-bottom:0.25rem'>
     {title}
   </div>
-  <div style='color:{color};font-size:0.78rem;font-weight:500;
-              margin-bottom:0.65rem'>
+  <div style='color:{color};font-size:0.8rem;font-weight:600;
+              margin-bottom:0.7rem'>
     {sub}
   </div>
-  <div style='color:#B7BFD2;font-size:0.88rem;line-height:1.5'>
+  <div style='color:#D1D8EA;font-size:0.88rem;line-height:1.55'>
     {body}
   </div>
 </div>
@@ -187,20 +187,21 @@ for col, (n, title, sub, bullets, color) in zip(cols, phases):
         )
         st.markdown(
             f"""
-<div style='border:1px solid #1F2742;border-radius:14px;
-            padding:1.25rem;height:100%'>
-  <div style='display:flex;align-items:baseline;gap:0.6rem;
-              margin-bottom:0.45rem'>
-    <span style='font-size:2.2rem;font-weight:800;line-height:1;color:{color}'>
+<div style='border:1px solid {color}44;border-radius:16px;
+            padding:1.4rem 1.25rem;height:100%;
+            background:linear-gradient(160deg, {color}1F 0%, {color}08 45%, transparent 90%)'>
+  <div style='display:flex;align-items:baseline;gap:0.7rem;
+              margin-bottom:0.5rem'>
+    <span style='font-size:2.4rem;font-weight:800;line-height:1;color:{color}'>
       {n}
     </span>
-    <span style='font-size:1.05rem;font-weight:600;color:#E5E9F2'>{title}</span>
+    <span style='font-size:1.1rem;font-weight:700;color:#F1F5FF'>{title}</span>
   </div>
-  <div style='color:{color};font-size:0.82rem;font-weight:500;
-              text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.85rem'>
+  <div style='color:{color};font-size:0.82rem;font-weight:600;
+              text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.95rem'>
     {sub}
   </div>
-  <ul style='margin:0;padding-left:1.1rem;font-size:0.9rem'>{bullet_html}</ul>
+  <ul style='margin:0;padding-left:1.1rem;font-size:0.9rem;color:#D1D8EA'>{bullet_html}</ul>
 </div>
 """,
             unsafe_allow_html=True,

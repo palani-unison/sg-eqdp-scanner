@@ -7,22 +7,20 @@ import streamlit as st
 from .theme import TIER_COLORS
 
 _DISCLAIMER_TEXT = (
-    "**Personal research of Palaniappan Chidambaram.** "
-    "Not investment advice. Not affiliated with Unison Group. "
-    "Beneficiary identification is *inferential* — MAS does not disclose "
-    "EQDP manager holdings. See the [Disclaimer](Disclaimer) page."
+    "**Not investment advice.** This is a technical study and analysis "
+    "intended for discussion. See the [Disclaimer](Disclaimer) page."
 )
 
 
 def disclaimer_banner() -> None:
-    st.warning(_DISCLAIMER_TEXT, icon=":material/warning:")
+    st.info(_DISCLAIMER_TEXT, icon=":material/info:")
 
 
 def page_header(title: str, subtitle: str | None = None, *, eyebrow: str | None = None) -> None:
     """Heavyweight typographic header — sets a forensic, editorial tone."""
     if eyebrow:
         st.markdown(
-            f"<div style='color:#7E89A6;font-size:0.78rem;letter-spacing:0.18em;"
+            f"<div style='color:#8A95B5;font-size:0.78rem;letter-spacing:0.18em;"
             f"text-transform:uppercase;margin-bottom:0.25rem'>{eyebrow}</div>",
             unsafe_allow_html=True,
         )
@@ -32,7 +30,7 @@ def page_header(title: str, subtitle: str | None = None, *, eyebrow: str | None 
     )
     if subtitle:
         st.markdown(
-            f"<div style='color:#7E89A6;font-size:1.02rem;max-width:62ch;"
+            f"<div style='color:#8A95B5;font-size:1.02rem;max-width:62ch;"
             f"line-height:1.55;margin-bottom:1.25rem'>{subtitle}</div>",
             unsafe_allow_html=True,
         )
@@ -59,12 +57,12 @@ def tier_pill(tier: str) -> str:
 
 def footer() -> None:
     st.markdown(
-        "<hr style='border:none;border-top:1px solid #1F2742;margin:2rem 0 0.75rem'/>"
-        "<div style='color:#7E89A6;font-size:0.82rem;line-height:1.5'>"
+        "<hr style='border:none;border-top:1px solid #252C4A;margin:2rem 0 0.75rem'/>"
+        "<div style='color:#8A95B5;font-size:0.82rem;line-height:1.5'>"
         "© 2026 Palaniappan Chidambaram. Personal research — not investment advice — "
         "not affiliated with Unison Group. "
-        "<a href='Disclaimer' target='_self' style='color:#7E89A6'>Disclaimer</a> · "
-        "<a href='About' target='_self' style='color:#7E89A6'>About</a>"
+        "<a href='Disclaimer' target='_self' style='color:#8A95B5'>Disclaimer</a> · "
+        "<a href='About' target='_self' style='color:#8A95B5'>About</a>"
         "</div>",
         unsafe_allow_html=True,
     )
@@ -72,9 +70,9 @@ def footer() -> None:
 
 def empty_state(message: str, hint: str | None = None) -> None:
     st.markdown(
-        f"<div style='border:1px dashed #1F2742;border-radius:12px;padding:2.25rem 1.25rem;"
-        f"text-align:center;color:#7E89A6'>"
-        f"<div style='font-size:1.05rem;color:#E5E9F2;margin-bottom:0.35rem'>{message}</div>"
+        f"<div style='border:1px dashed #252C4A;border-radius:12px;padding:2.25rem 1.25rem;"
+        f"text-align:center;color:#8A95B5'>"
+        f"<div style='font-size:1.05rem;color:#F1F5FF;margin-bottom:0.35rem'>{message}</div>"
         f"{f'<div style=\"font-size:0.85rem\">{hint}</div>' if hint else ''}"
         f"</div>",
         unsafe_allow_html=True,

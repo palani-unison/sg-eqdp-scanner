@@ -1,4 +1,4 @@
-"""About — author, scope, contact."""
+"""About — what this is, what it isn't, and how it's built."""
 
 from __future__ import annotations
 
@@ -17,39 +17,40 @@ st.set_page_config(page_title="About · EQDP", page_icon=":material/info:", layo
 disclaimer_banner()
 page_header(
     "About",
-    subtitle="Who is doing this work, why, and what it is — and is not.",
+    subtitle="A quantitative case study built for education and institutional-grade analysis.",
     eyebrow="Identity",
 )
 
 st.markdown(
     """
-This is the **personal research of Palaniappan Chidambaram**. It is *not* the
-work product of Unison Group, MAS, SGX, or any of the nine EQDP-appointed
-managers. Views are the author's own.
+### About this work
 
-The site exists because MAS does not disclose the specific Singapore-listed
-companies its appointed managers have purchased. That informational gap means
-public discussion of "who is benefiting from the programme" is mostly noise.
-The aim here is to do the dull, careful, *forensic* work — combine eligibility,
-broker coverage, market microstructure, and 5%+ filings — and report what
-the evidence actually supports.
+This site is a **quantitative case study** intended for **education and
+institutional-grade analysis**. The aim is the dull, careful, *forensic*
+work — combine eligibility, broker coverage, market microstructure, and
+5%+ filings — and report what the evidence actually supports. The
+methodology, code, and underlying data file are all public so anyone
+can reproduce the conclusions or disagree with specific steps.
 
 ### Scope
 
-- Universe: SGX-listed equities, ~200 names across T1 / T2 / T3 / control.
-- Window: 2024-01 to today, with 252-day β windows ending 30 days pre-event.
-- Refresh: daily prices, weekly filings, monthly synth-control refits.
+- **Universe:** SGX-listed equities, ~70 names across T1 / T2 / T3 / control.
+- **Window:** 2020-01 to today, with 252-day β windows ending 30 days pre-event.
+- **Refresh:** daily prices, weekly filings, monthly synthetic-control refits.
 
 ### Stack
 
-- Python (pandas, statsmodels, tfcausalimpact) for analytics.
-- Supabase Postgres as the gold layer.
-- Streamlit Community Cloud for the public site.
-- GitHub Actions for the cron jobs.
+- **Python** (pandas, numpy, scipy, statsmodels, linearmodels) for analytics.
+- **DuckDB** as the gold layer — a single file at `data/eqdp.duckdb`, committed to the repo.
+- **Streamlit Community Cloud** for the public site.
+- **GitHub Actions** for the daily / weekly / monthly cron jobs.
 
-### Contact
+### What this site does *not* do
 
-Questions, corrections, take-down requests — `palani@unisongroup.com`.
+- It does not give investment advice.
+- It does not claim to know which exact stocks a given manager has bought.
+- It does not predict future outperformance for any name.
+- It does not benchmark against any specific portfolio strategy.
 """
 )
 

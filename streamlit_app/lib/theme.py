@@ -9,22 +9,24 @@ from __future__ import annotations
 import plotly.graph_objects as go
 import plotly.io as pio
 
-INK = "#E5E9F2"
-MUTED = "#7E89A6"
-GRID = "#1F2742"
-PAPER = "#0B1020"
-PANEL = "#121933"
+INK = "#F1F5FF"
+MUTED = "#8A95B5"
+GRID = "#252C4A"
+PAPER = "#0A0E1F"
+PANEL = "#141A33"
 
 GREEN = "#3DD68C"
 RED = "#FF6B6B"
 AMBER = "#F5A623"
-BLUE = "#4FA3FF"
+BLUE = "#22D3EE"
+PURPLE = "#A78BFA"
+PINK = "#F472B6"
 
 TIER_COLORS = {
     "T1": "#3DD68C",
-    "T2": "#4FA3FF",
+    "T2": "#22D3EE",
     "T3": "#A78BFA",
-    "control": "#7E89A6",
+    "control": "#8A95B5",
     "none": "#3F4868",
 }
 
@@ -48,7 +50,7 @@ def _register_template() -> None:
     tmpl.layout.paper_bgcolor = PAPER
     tmpl.layout.plot_bgcolor = PAPER
     tmpl.layout.font = dict(color=INK, family="Inter, system-ui, sans-serif", size=12)
-    tmpl.layout.colorway = [GREEN, BLUE, AMBER, RED, "#A78BFA", "#F472B6", "#22D3EE"]
+    tmpl.layout.colorway = [GREEN, BLUE, AMBER, PURPLE, PINK, RED, "#FBBF24"]
     tmpl.layout.xaxis = dict(
         gridcolor=GRID, zerolinecolor=GRID, linecolor=GRID, ticks="outside", tickcolor=GRID
     )
