@@ -4,16 +4,22 @@
 # Data
 pandas==2.2.3
 numpy==2.1.3
-duckdb==1.1.3
+duckdb>=1.5.0,<2.0    # 1.1.3 has a bug where DEFAULT uuid() fires on UPDATE
 pyarrow==18.1.0
-yfinance==0.2.50
+yfinance>=1.3.0        # 0.2.x is broken against Yahoo's new bot-detection.
+curl_cffi>=0.7         # required by yfinance for browser-TLS impersonation;
+                       # without it Yahoo silently rejects SGX requests.
 
 # Statistics / econometrics
 scipy==1.14.1
 statsmodels==0.14.4
 linearmodels==6.1
-# Bayesian synthetic control. tfcausalimpact is the actively-maintained pkg.
-tfcausalimpact==0.0.16
+# Bayesian synthetic control. Deferred (Day 5) — tfcausalimpact 0.0.16 is
+# Python<3.12, and 0.0.18 pins pandas<=2.2 which clashes with our 2.2.3.
+# When we wire up synth-control we'll either re-pin pandas or use a hand-rolled
+# Abadie estimator. For now, the four event studies + DiD + bootstrap pipelines
+# don't need it.
+# tfcausalimpact==0.0.18
 
 # HTTP / scraping
 requests==2.32.3

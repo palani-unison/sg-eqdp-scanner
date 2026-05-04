@@ -129,6 +129,9 @@ def _upsert_prices(client: Any, df: pd.DataFrame, run_id: str | None) -> int:
     df["pipeline_run_id"] = run_id
     df["trade_date"] = df["trade_date"].astype(str)  # Postgres date wire format
     df = df.drop(columns=["fetched_at_utc"])  # not in prices_daily schema
+    # dollar_volume was a generated column in the legacy Postgres schema;
+    # the DuckDB schema stores it as a regular column, so populate it here.
+    df["dollar_volume"] = df["adj_close"] * df["volume"]
     rows = df.to_dict(orient="records")
     n_written = 0
     for i in range(0, len(rows), UPSERT_CHUNK):

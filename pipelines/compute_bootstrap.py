@@ -83,7 +83,8 @@ def _load_prices(client: Any) -> pd.DataFrame:
     rows = _paginate(client, "prices_daily", "ticker,trade_date,adj_close")
     df = pd.DataFrame(rows)
     df["trade_date"] = pd.to_datetime(df["trade_date"])
-    return df
+    # DuckDB pagination on a single-column ORDER BY can revisit tied rows.
+    return df.drop_duplicates(subset=["ticker", "trade_date"], keep="first")
 
 
 def _load_betas(client: Any) -> dict[str, BetaEstimate]:
