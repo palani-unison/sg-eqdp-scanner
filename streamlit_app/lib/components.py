@@ -1,4 +1,7 @@
-"""Shared Streamlit UI components — disclaimer banner, KPI cards, tier pill."""
+"""Shared Streamlit UI components — disclaimer banner, KPI cards, tier pill,
+and a one-shot mobile-responsive CSS injection that every page picks up via
+``disclaimer_banner()``.
+"""
 
 from __future__ import annotations
 
@@ -12,12 +15,91 @@ _DISCLAIMER_TEXT = (
 )
 
 
+# Tightens layout, shrinks heavy chart heights, compacts KPI metrics, and
+# makes wide DataFrames horizontally scrollable on narrow viewports. Streamlit
+# columns already stack on narrow viewports — this CSS just polishes the
+# resulting vertical layout so it doesn't feel like a desktop site mashed
+# onto a phone.
+_MOBILE_CSS = """
+<style>
+/* ---------- universal padding tightening (phones + tablets) ---------- */
+@media (max-width: 768px) {
+  .main .block-container, [data-testid="stAppViewContainer"] .main .block-container {
+    padding-top: 0.85rem !important;
+    padding-bottom: 1rem !important;
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+  }
+  /* Compact disclaimer banner */
+  [data-testid="stAlert"] {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+/* ---------- phone-only tweaks ---------- */
+@media (max-width: 640px) {
+  /* Page header / typography */
+  h1 { font-size: 1.55rem !important; line-height: 1.2 !important; }
+  h2 { font-size: 1.2rem !important; }
+  h3 { font-size: 1.05rem !important; }
+  /* Body / subtitle markdown */
+  .stMarkdown p, .stMarkdown li { font-size: 0.95rem !important; line-height: 1.5 !important; }
+
+  /* KPI metrics — keep them compact when stacked */
+  [data-testid="stMetric"] {
+    background: rgba(34, 211, 238, 0.04);
+    border: 1px solid #1F2742;
+    border-radius: 10px;
+    padding: 0.55rem 0.8rem !important;
+    margin-bottom: 0.4rem;
+  }
+  [data-testid="stMetricValue"] { font-size: 1.05rem !important; }
+  [data-testid="stMetricLabel"] { font-size: 0.78rem !important; }
+  [data-testid="stMetricDelta"] { font-size: 0.78rem !important; }
+
+  /* DataFrames — let wide tables scroll horizontally instead of squashing */
+  [data-testid="stDataFrame"] { overflow-x: auto !important; }
+
+  /* Selectboxes / multiselects — readable text */
+  .stSelectbox, .stMultiSelect, .stRadio { font-size: 0.95rem !important; }
+
+  /* Sidebar — narrower so it doesn't dominate when opened */
+  section[data-testid="stSidebar"] { width: 250px !important; min-width: 250px !important; }
+}
+
+/* ---------- always: cap Plotly chart vertical sprawl on narrow viewports --- */
+@media (max-width: 640px) {
+  .js-plotly-plot, .plot-container, [data-testid="stPlotlyChart"] iframe {
+    max-height: 520px !important;
+  }
+}
+
+/* Custom HTML cards (Investment Thesis types & phases) — wrap inner text */
+@media (max-width: 640px) {
+  div[style*="border-radius:14px"], div[style*="border-radius:16px"] {
+    margin-bottom: 0.6rem;
+  }
+}
+</style>
+"""
+
+
+def _inject_mobile_css() -> None:
+    """Inject the responsive CSS once per session run. Streamlit deduplicates
+    identical st.markdown calls implicitly across the same page render, so
+    this is safe to call from every page."""
+    st.markdown(_MOBILE_CSS, unsafe_allow_html=True)
+
+
 def disclaimer_banner() -> None:
+    _inject_mobile_css()
     st.info(_DISCLAIMER_TEXT, icon=":material/info:")
 
 
 def page_header(title: str, subtitle: str | None = None, *, eyebrow: str | None = None) -> None:
     """Heavyweight typographic header — sets a forensic, editorial tone."""
+    _inject_mobile_css()
     if eyebrow:
         st.markdown(
             f"<div style='color:#8A95B5;font-size:0.78rem;letter-spacing:0.18em;"
