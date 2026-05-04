@@ -22,7 +22,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.components import disclaimer_banner, empty_state, footer, page_header
-from lib.supabase import load_filings, load_prices, load_tickers
+from lib.store import load_filings, load_prices, load_tickers
 from lib.ta import amihud, atr, bollinger, ema, macd, rsi, sma
 from lib.theme import AMBER, BLUE, GREEN, GRID, INK, MUTED, RED, EVENT_DATES
 

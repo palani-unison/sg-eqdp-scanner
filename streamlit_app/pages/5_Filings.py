@@ -13,7 +13,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.components import disclaimer_banner, empty_state, footer, page_header
-from lib.supabase import load_filings, load_managers
+from lib.store import load_filings, load_managers
 
 st.set_page_config(page_title="Filings · EQDP", page_icon=":material/inventory_2:", layout="wide")
 disclaimer_banner()

@@ -7,7 +7,7 @@ Two parallel tracks:
 - **Track B — Streamlit data-science app** (Days 6–13)
 - **Track C — Launch & QA** (Days 14–15)
 
-> **Pivot — 2026-05-04.** Track B was originally a Next.js + Vercel web app. The project has been flipped to **Streamlit** hosted on **Streamlit Community Cloud** (free tier). The new surface lives in `streamlit_app/`. The legacy `web/` directory is retained for reference only and will be deleted once the Streamlit app reaches feature parity.
+> **Pivot — 2026-05-04.** Track B was originally a Next.js + Vercel + Supabase Postgres stack. The project has been flipped to **Streamlit** + **DuckDB-in-repo** (`data/eqdp.duckdb`) hosted on **Streamlit Community Cloud** (free tier). Supabase is fully removed; pipelines write to DuckDB via the shim in `src/store.py`. The new surface lives in `streamlit_app/`. The legacy `web/` directory is retained for reference only and will be deleted once the Streamlit app reaches feature parity.
 
 ---
 

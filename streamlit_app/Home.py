@@ -17,7 +17,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from lib.components import disclaimer_banner, empty_state, footer, kpi_row, page_header
-from lib.supabase import (
+from lib.store import (
     latest_pipeline_runs,
     load_did_forest,
     load_factor_returns,

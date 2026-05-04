@@ -18,17 +18,19 @@ MAS does not disclose which specific stocks the EQDP-appointed managers buy. Thi
 1. Constructs a **three-tier beneficiary universe** — Confirmed (SGXNet 5%+ filings), Eligible (programmatic screen), Named (broker beneficiary lists).
 2. Computes **abnormal returns** (CAPM- and Fama-French-adjusted), **liquidity changes** (Amihud), and **synthetic-control counterfactuals** around the four EQDP event dates.
 3. Produces a **decoupled candidate score** that does not use returns as an input — so we never measure the outcome with the outcome.
-4. Stores results in **Supabase Postgres** and renders them in a **Streamlit** data-science dashboard with a forensic, technical-analyst aesthetic.
+4. Stores results in a **DuckDB file committed to the repo** (`data/eqdp.duckdb`) and renders them in a **Streamlit** data-science dashboard with a forensic, technical-analyst aesthetic.
 
 ## Architecture
 
 | Layer | Tech | Role |
 |---|---|---|
 | Analytical core | Python 3.11, pandas, numpy, scipy, statsmodels, linearmodels, CausalImpact, yfinance | All analysis, signals, backtests |
-| Data store | Supabase Postgres | Gold-tier tables (prices, abnormal returns, candidate scores, T1 filings) |
+| Data store | DuckDB file (`data/eqdp.duckdb`, in repo) | Gold-tier tables (prices, abnormal returns, candidate scores, T1 filings) |
 | Web app | Streamlit + Plotly | Public site (`streamlit_app/`) — Tracker, Event Studies, Universe, Ticker Analyzer, Filings |
-| Pipeline runner | GitHub Actions | Daily / weekly / monthly Python jobs |
+| Pipeline runner | GitHub Actions | Daily / weekly / monthly Python jobs that update the DuckDB file and push it back |
 | Hosting | Streamlit Community Cloud (free tier) | The web app |
+
+> No managed database, no auth, no external service. The dashboard reads from the same DuckDB file the pipeline wrote — a clone of the repo is a complete reproduction of the analysis.
 
 > The legacy Next.js prototype lives in `web/` and is no longer the active surface. It will be removed once the Streamlit app reaches feature parity.
 
@@ -38,7 +40,6 @@ See [`CLAUDE.md`](CLAUDE.md) for the project guide, [`docs/STRATEGY.md`](docs/ST
 
 ### Prerequisites
 - Python 3.11+
-- A free Supabase project ([supabase.com](https://supabase.com))
 - A free Streamlit Community Cloud account ([streamlit.io/cloud](https://streamlit.io/cloud))
 
 ### Reproduce the analysis (Phase 0 backfill on your laptop)
@@ -47,22 +48,20 @@ git clone https://github.com/<your-handle>/sg-eqdp-scanner.git
 cd sg-eqdp-scanner
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env       # fill SUPABASE_URL + SUPABASE_SERVICE_KEY
-psql "$DATABASE_URL" -f db/schema.sql   # or paste into Supabase SQL editor
+python -m scripts.init_duckdb              # creates data/eqdp.duckdb
 python -m pipelines.backfill --start 2020-01-01 --end yesterday
 ```
 
 ### Run the Streamlit app locally
 ```bash
-cp streamlit_app/.streamlit/secrets.toml.example streamlit_app/.streamlit/secrets.toml
-# edit secrets.toml — at minimum set SUPABASE_URL and SUPABASE_ANON_KEY
 streamlit run streamlit_app/Home.py
 ```
+The app reads `data/eqdp.duckdb`. If it's missing, run `python -m scripts.init_duckdb` first.
 
 ### Deploy to Streamlit Community Cloud (free)
 1. Push this repo to GitHub.
 2. New app → repo + branch + main file path = `streamlit_app/Home.py`.
-3. Settings → Secrets → paste the contents of `secrets.toml.example` with real values.
+3. No secrets required — the DuckDB file ships with the repo.
 4. Streamlit installs from `requirements.txt` automatically; the app cold-starts in ~60s.
 
 ### Continue the live increments

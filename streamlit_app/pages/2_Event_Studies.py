@@ -14,7 +14,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.components import disclaimer_banner, empty_state, footer, page_header
-from lib.supabase import load_event_study, load_tickers
+from lib.store import load_event_study, load_tickers
 from lib.theme import BLUE, GREEN, MUTED, EVENT_LABELS
 
 st.set_page_config(page_title="Event Studies · EQDP", page_icon=":material/timeline:", layout="wide")

@@ -13,7 +13,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.components import disclaimer_banner, empty_state, footer, page_header
-from lib.supabase import load_latest_scores, load_tickers
+from lib.store import load_latest_scores, load_tickers
 from lib.theme import TIER_COLORS
 
 st.set_page_config(page_title="Tracker · EQDP Scanner", page_icon=":material/leaderboard:", layout="wide")

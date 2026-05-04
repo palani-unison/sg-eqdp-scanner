@@ -95,9 +95,13 @@ SGX_SUFFIX = ".SI"  # yfinance suffix for SGX equities
 | 2026-05-03 | Web app, not PDF | Live data + registration tracking + visualisations |
 | 2026-05-03 | Repo `sg-eqdp-scanner`, public, MIT | Reproducibility credibility |
 | 2026-05-03 | Hybrid runner: GitHub Actions for Python, Edge Functions for glue | Edge Functions are Deno-only; can't run statsmodels |
-| 2026-05-03 | Supabase Postgres = system of record | Avoid git data churn; queryable historical depth |
+| 2026-05-03 | Supabase Postgres = system of record (**reversed 2026-05-04**) | Avoid git data churn; queryable historical depth |
 | 2026-05-03 | Phase 0 backfill on laptop, Phase 1 increments in cloud | Backfill is one-shot heavy, increments are tiny |
 | 2026-05-03 | Brand = "EQDP Brief" (not "dossier") | Distinguish from third-party reference PDF |
+| 2026-05-04 | **Web layer flipped Next.js → Streamlit** | Free Streamlit Cloud, data-science / TA aesthetic, no auth complexity |
+| 2026-05-04 | **Data store flipped Supabase → DuckDB-in-repo** (`data/eqdp.duckdb`) | One-file analytics DB, no managed service, dashboard self-contained |
+| 2026-05-04 | **Registration / email gate dropped** | Public read-only; Streamlit Cloud handles deploy without auth |
+| 2026-05-04 | `src/store.py` shim mimics supabase-py chain so pipelines didn't need rewrites | Smallest diff to swap data layers |
 
 ## Open questions
 

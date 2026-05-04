@@ -15,18 +15,18 @@ This is the **personal research of Palaniappan Chidambaram**, **not affiliated w
 ## Architecture
 
 ```
-GitHub Actions (Python)        Supabase                  Streamlit Cloud
-─────────────────────────      ────────                  ────────────────
-pipelines/*.py                 Postgres tables   ◄─────  streamlit_app/
-yfinance, statsmodels  ───►   (gold layer)              reads via
-CausalImpact, scrapers                                  supabase-py (anon key)
+GitHub Actions (Python)        DuckDB-in-repo          Streamlit Cloud
+─────────────────────────      ──────────────          ─────────────────
+pipelines/*.py        ───►    data/eqdp.duckdb  ◄────  streamlit_app/
+yfinance, statsmodels         (committed file)         reads via duckdb
+CausalImpact, scrapers                                 (read-only)
 ```
 
 - **Python** (`src/`, `scrapers/`, `pipelines/`) does all analysis. Single-node pandas + DuckDB. No Spark, no Delta.
-- **Supabase Postgres** is the system of record for the gold layer. Schema: `db/schema.sql`. RLS grants public SELECT on every analytical table; service-role key writes from the pipeline.
-- **Streamlit** (`streamlit_app/`) is the public site — multi-page data-science app with Plotly charts, candlestick TA view, event studies, candidate-score tracker. Entry point: `streamlit_app/Home.py`. Theme + secrets in `streamlit_app/.streamlit/`.
-- **GitHub Actions** runs the daily/weekly/monthly Python jobs. Free for the public repo.
-- **Streamlit Community Cloud** hosts the public app on the free tier.
+- **DuckDB-in-repo** is the system of record. The single file `data/eqdp.duckdb` is committed to the repo. Schema: `db/schema_duckdb.sql`. There is no managed database, no auth, no external service — pipelines write the file, the dashboard reads it.
+- **Pipeline write path** uses `src/db.py::get_supabase()` (legacy name, returns a `DuckStore`). The shim in `src/store.py` exposes a `supabase-py`-compatible chainable API (`.table().upsert()/.select().eq().order().execute()`) so the pipelines did not need rewrites when Supabase was removed. Read it before adding new pipeline code.
+- **Streamlit** (`streamlit_app/`) is the public site — multi-page data-science app with Plotly charts, candlestick TA view, event studies, candidate-score tracker. Entry point: `streamlit_app/Home.py`. Reads DuckDB directly via `streamlit_app/lib/store.py`. No secrets needed.
+- **GitHub Actions** runs the daily/weekly/monthly Python jobs and commits the updated `data/eqdp.duckdb` back to the repo. Free for the public repo. Streamlit Cloud auto-redeploys on push.
 
 > The `web/` directory holds an earlier Next.js prototype. It is no longer the active surface; do not extend it. Add features to `streamlit_app/`.
 
@@ -89,11 +89,11 @@ A stock can sit in multiple tiers; highest tier wins for headline classification
 ## Web app (`streamlit_app/`)
 
 - Streamlit multi-page app — `Home.py` + `pages/*`. Plotly for all charts, dark "forensic" template registered in `lib/theme.py`.
-- Reads from Supabase via `supabase-py` with the anon key (RLS allows public SELECT on every analytical table). Cached with `@st.cache_data(ttl=...)`. Never imports Python pipeline code.
+- Reads from DuckDB at `data/eqdp.duckdb` (read-only mode) via `lib.store`. Cached with `@st.cache_data(ttl=...)`. Never imports Python pipeline code.
 - Pages: **Home** (snapshot + DiD forest), **Tracker** (full candidate-score table with filters), **Event Studies** (CARs by event/benchmark, treated vs control), **Universe** (T1/T2/T3 explorer), **Ticker Analyzer** (candlestick + RSI/MACD/Bollinger/Amihud + event lines + filing markers), **Filings** (T1 SGXNet feed), **Methodology**, **Brief** (placeholder), **About**, **Disclaimer**.
 - Disclaimer banner (`lib/components.disclaimer_banner`) renders at the top of every page; full text on the Disclaimer page reads `docs/DISCLAIMER.md` directly so the canonical text lives in one place.
 - TA helpers (`lib/ta.py`) are pure pandas — no `pandas-ta` to dodge pkg_resources/numpy issues on Streamlit Cloud.
-- Deploy: Streamlit Community Cloud → main file `streamlit_app/Home.py` → secrets pasted from `secrets.toml.example`.
+- Deploy: Streamlit Community Cloud → main file `streamlit_app/Home.py`. No secrets required — the DuckDB file ships with the repo.
 
 ## Common workflows
 
@@ -102,7 +102,7 @@ Run Phase 0 backfill on laptop:
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env  # then fill SUPABASE_URL + SUPABASE_SERVICE_KEY
+python -m scripts.init_duckdb                 # creates data/eqdp.duckdb
 python -m pipelines.backfill --start 2020-01-01 --end yesterday
 ```
 
@@ -115,17 +115,15 @@ python -m pipelines.daily_score --date 2026-05-02
 Run the Streamlit app locally:
 
 ```bash
-cp streamlit_app/.streamlit/secrets.toml.example streamlit_app/.streamlit/secrets.toml
-# fill SUPABASE_URL + SUPABASE_ANON_KEY
 streamlit run streamlit_app/Home.py
 ```
 
 Apply DB schema changes:
 
 ```bash
-# either via Supabase CLI:
-supabase db push
-# or paste db/schema.sql into the Supabase SQL editor
+# DuckDB-in-repo edition: edit db/schema_duckdb.sql, then re-init.
+# (init is idempotent — every CREATE uses IF NOT EXISTS.)
+python -m scripts.init_duckdb
 ```
 
 ## What NOT to do
@@ -155,7 +153,8 @@ When relevant, use:
 | Day-by-day plan | `docs/PLAN.md` |
 | Methodology details + math | `docs/METHODOLOGY.md` |
 | Disclaimer text | `docs/DISCLAIMER.md` |
-| Postgres schema | `db/schema.sql` |
+| DuckDB schema (active) | `db/schema_duckdb.sql` |
+| Legacy Postgres schema | `db/schema.sql` (kept for reference) |
 | Tier 1/2/3 starter universe | `docs/TICKERS.md` |
 | Working memory (live) | `memory.md` |
 | Public README | `README.md` |

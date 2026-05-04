@@ -21,9 +21,8 @@ beautifulsoup4==4.12.3
 lxml==5.3.0
 tenacity==9.0.0          # retries with backoff
 
-# Database
-supabase==2.10.0
-psycopg2-binary==2.9.10
+# Database — DuckDB-in-repo (the file lives at data/eqdp.duckdb).
+# Supabase is no longer used. duckdb is also pinned above for analytical work.
 
 # Plotting (Streamlit app uses plotly; matplotlib for static PDF exports)
 matplotlib==3.9.3

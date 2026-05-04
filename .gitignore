@@ -30,12 +30,15 @@ web/.env.local
 .ipynb_checkpoints/
 *.ipynb
 
-# Data — analytical gold tables live in Supabase, not in git
+# Data — DuckDB-in-repo edition: the gold layer is data/eqdp.duckdb itself.
+# Everything else under data/ is intermediate / per-developer scratch.
 data/raw/
 data/silver/
 data/gold/
+data/exports/
 *.parquet
 *.duckdb
+!data/eqdp.duckdb
 *.csv
 !docs/**/*.csv
 

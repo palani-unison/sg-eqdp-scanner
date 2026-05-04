@@ -13,7 +13,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.components import disclaimer_banner, empty_state, footer, page_header, tier_pill
-from lib.supabase import load_managers, load_tickers
+from lib.store import load_managers, load_tickers
 from lib.theme import TIER_COLORS
 
 st.set_page_config(page_title="Universe · EQDP", page_icon=":material/dataset:", layout="wide")
