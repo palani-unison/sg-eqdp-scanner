@@ -217,6 +217,8 @@ else:
     show = top[
         [
             "ticker",
+            "name",
+            "sgx_url",
             "eqdp_tier",
             "total_score",
             "liquidity_rise",
@@ -229,6 +231,8 @@ else:
     ].copy()
     show.columns = [
         "Ticker",
+        "Name",
+        "SGX",
         "Tier",
         "Score",
         "Liquidity Δ",
@@ -243,6 +247,12 @@ else:
         use_container_width=True,
         hide_index=True,
         column_config={
+            "SGX": st.column_config.LinkColumn(
+                "SGX",
+                help="Open the security on investors.sgx.com",
+                display_text="↗",
+                width="small",
+            ),
             "Score": st.column_config.ProgressColumn(
                 "Score", min_value=0.0, max_value=1.0, format="%.2f"
             ),

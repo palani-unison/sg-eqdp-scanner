@@ -37,7 +37,7 @@ if scores.empty or tickers.empty:
     st.stop()
 
 merged = scores.merge(
-    tickers[["ticker", "name", "sector", "market_cap_band", "listing_board"]],
+    tickers[["ticker", "sector", "market_cap_band", "listing_board"]],
     on="ticker",
     how="left",
 )
@@ -117,6 +117,7 @@ st.subheader("Ranked screen")
 display_cols = [
     "ticker",
     "name",
+    "sgx_url",
     "eqdp_tier",
     "total_score",
     "liquidity_rise",
@@ -131,6 +132,7 @@ show = flt[display_cols].rename(
     columns={
         "ticker": "Ticker",
         "name": "Name",
+        "sgx_url": "SGX",
         "eqdp_tier": "Tier",
         "total_score": "Score",
         "liquidity_rise": "Liq Δ",
@@ -147,6 +149,12 @@ st.dataframe(
     use_container_width=True,
     hide_index=True,
     column_config={
+        "SGX": st.column_config.LinkColumn(
+            "SGX",
+            help="Open the security on investors.sgx.com",
+            display_text="↗",
+            width="small",
+        ),
         "Score": st.column_config.ProgressColumn(
             "Score", min_value=0.0, max_value=1.0, format="%.2f"
         ),

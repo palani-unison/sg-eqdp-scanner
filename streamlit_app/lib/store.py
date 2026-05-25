@@ -89,17 +89,24 @@ def load_latest_scores(top_n: int = 50) -> pd.DataFrame:
         return pd.DataFrame()
     d = latest.iloc[0]["d"]
     sql = """
-        SELECT ticker, score_date, liquidity_rise, institutional_proxy,
-               index_inclusion, broker_named, filing_present,
-               total_score, eqdp_tier
-        FROM candidate_scores
-        WHERE score_date = ?
-        ORDER BY total_score DESC
+        SELECT c.ticker,
+               t.name,
+               COALESCE(t.sgx_code, REPLACE(c.ticker, '.SI', '')) AS sgx_code,
+               c.score_date, c.liquidity_rise, c.institutional_proxy,
+               c.index_inclusion, c.broker_named, c.filing_present,
+               c.total_score, c.eqdp_tier
+        FROM candidate_scores c
+        LEFT JOIN tickers t USING (ticker)
+        WHERE c.score_date = ?
+        ORDER BY c.total_score DESC
     """
     df = _query(sql, [d])
     if df.empty:
         return df
     df["score_date"] = pd.to_datetime(df["score_date"]).dt.date
+    df["sgx_url"] = "https://investors.sgx.com/market/security-details/stocks/" + df[
+        "sgx_code"
+    ].fillna("")
     return df.head(top_n) if top_n else df
 
 
